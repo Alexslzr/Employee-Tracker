@@ -30,6 +30,8 @@ function init(){
                           'Update Employee Role',
                           'Update Employee Manager',
                           'Delete an Employee',
+                          'View Employees by Department',
+                          'View Employees by Manager',
                           'Quit']
             }
         ]).then((response)=>{
@@ -51,6 +53,10 @@ function init(){
                 case "Update Employee Manager": updateEmpManager()
                 break;
                 case "Delete an Employee": deleteEmp()
+                break;
+                case "View Employees by Department": viewEmpbyDep()
+                break;
+                case "View Employees by Manager": viewEmpbyManager()
                 break;
                 case "Quit": process.exit(0)
                 break;
@@ -211,8 +217,42 @@ function deleteEmp(){
             console.log(`${employee} deleted from database`)
             init();
         })
-    })
-    
+    }) 
 }
 
+function viewEmpbyDep(){
+    inquirer
+        .prompt([{
+            type: 'input',
+            name: 'department',
+            message: 'Please enter the id of the Department you want to see'
+        }]).then(({department})=>{
+            db.query(`select employee.id as ID,employee.first_name as FirstName, employee.last_name as LastName,role.title as Role , role.salary as Salary,department.name AS Department, employee.manager_id
+            FROM employee 
+            JOIN role ON employee.role_id=role.id 
+            JOIN department on department.id=role.department_id 
+            WHERE department.id = ?`,department,(err,res)=>{
+                console.table(res);
+                init();
+            })
+        })
+}
+
+function viewEmpbyManager(){
+    inquirer
+        .prompt([{
+            type: 'input',
+            name: 'manager',
+            message: 'Please enter the id of the Manager you want to see'
+        }]).then(({manager})=>{
+            db.query(`select employee.id as ID,employee.first_name as FirstName, employee.last_name as LastName,role.title as Role , role.salary as Salary,department.name AS Department, employee.manager_id
+            FROM employee 
+            JOIN role ON employee.role_id=role.id 
+            JOIN department on department.id=role.department_id 
+            WHERE manager_id = ?`,manager,(err,res)=>{
+                console.table(res);
+                init();
+            })
+        })
+}
 init();
