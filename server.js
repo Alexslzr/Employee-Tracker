@@ -29,7 +29,7 @@ function init(){
                           'Add a Department',
                           'Update Employee Role',
                           'Update Employee Manager',
-                          /*'Delete an Employee',*/
+                          'Delete an Employee',
                           'Quit']
             }
         ]).then((response)=>{
@@ -50,8 +50,8 @@ function init(){
                 break;
                 case "Update Employee Manager": updateEmpManager()
                 break;
-              /*  case "Delete an Employee": deleteEmp()
-                break;*/
+                case "Delete an Employee": deleteEmp()
+                break;
                 case "Quit": process.exit(0)
                 break;
             }
@@ -157,7 +157,7 @@ function addRole(){
             })   
 }
 
-//need to fix
+
 function updateEmpRole(){
     inquirer
         .prompt([
@@ -199,7 +199,6 @@ function updateEmpManager(){
     })
 }
 
-/*
 function deleteEmp(){
     inquirer
         .prompt([{
@@ -208,11 +207,12 @@ function deleteEmp(){
             message: 'please enter the first name of the employee to delete'
         }
     ]).then(({employee})=>{
-        db.query('DELETE employee WHERE first_name = ?',[employee],(err,res)=>{
-            err ? console.error(err) : console.log(`${employee} deleted from database`)
+        db.query('DELETE FROM employee WHERE first_name = ?',[employee],(err,res)=>{
+            console.log(`${employee} deleted from database`)
+            init();
         })
     })
-    init();
+    
 }
-*/
+
 init();
