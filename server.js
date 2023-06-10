@@ -83,35 +83,35 @@ function viewAllRole(){
     })
     init();
 }
-
+//need to fix
 function addEmp(){
     inquirer
-        .prompt(
+        .prompt([
             {
                 type: 'input',
                 name: 'firstName',
-                message: 'Introduce First Name of Employee',
+                message: 'Introduce First Name of Employee'
             },
             {
                 type: 'input',
                 name: 'lastName',
-                message: 'Introduce Last Name of Employee',
+                message: 'Introduce Last Name of Employee'
             },
             {
                 type: 'input',
                 name: 'role',
-                message: 'please enter the id number of the role of the new employee',
+                message: 'please enter the id number of the role of the new employee'
             },
             {
                 type: 'input',
                 name: 'manager',
                 message: 'Please enter the id number of the manager of the new employee'
             },
-        ).then(({firstName,lastName,role,manager}) => {
-            db.promise().query('INSERT INTO employee(first_name,last_name,role_id,manager_id) VALUES(?,?,?,?)',[firstName,lastName,role,manager]).then(([rows])=>{
+        ]).then(({firstName,lastName,role,manager}) => {
+            db.query('INSERT INTO employee(first_name,last_name,role_id,manager_id) VALUES(?,?,?,?)',[firstName,lastName,role,manager], (err,res)=>{
                 console.log('Employees Table Updated')
                 init();
-        })
+            })
     })
 }
 
@@ -157,6 +157,7 @@ function addRole(){
             })   
 }
 
+//need to fix
 function updateEmpRole(){
     inquirer
         .prompt([
