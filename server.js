@@ -83,7 +83,7 @@ function viewAllRole(){
     })
     init();
 }
-//need to fix
+
 function addEmp(){
     inquirer
         .prompt([
@@ -107,8 +107,8 @@ function addEmp(){
                 name: 'manager',
                 message: 'Please enter the id number of the manager of the new employee'
             },
-        ]).then(({firstName,lastName,role,manager}) => {
-            db.query('INSERT INTO employee(first_name,last_name,role_id,manager_id) VALUES(?,?,?,?)',[firstName,lastName,role,manager], (err,res)=>{
+            ]).then(({firstName,lastName,role,manager}) => {
+                db.query('INSERT INTO employee(first_name,last_name,role_id,manager_id) VALUES(?,?,?,?)',[firstName,lastName,role,manager], (err,res)=>{
                 console.log('Employees Table Updated')
                 init();
             })
@@ -169,10 +169,10 @@ function updateEmpRole(){
             {
                 type: "input",
                 name: 'roleId',
-                message: 'Please Enter the id of the new role of the employee',
+                message: 'Please Enter the id of the new role of the employee'
             }
-        ]).then(({employee,roleId})=>{
-            db.query(`UPDATE employee SET role_id = ? WHERE first_name = "?"`,[employee,roleId], (err,res)=>{
+            ]).then(({employee,roleId})=>{
+            db.query(`UPDATE employee SET role_id = ? WHERE first_name = ?`,[roleId,employee], (err,res)=>{
                 console.log(`Role updated for ${employee}`)
                 init();
             })
@@ -189,10 +189,10 @@ function updateEmpManager(){
         {
             type: "input",
             name: 'managerId',
-            message: 'Please Enter the id of the new Manager of the employee or set it ',
+            message: 'Please Enter the id of the new Manager of the employee or set it '
         }
-    ]).then(({employee,managerId})=>{
-        db.query(`UPDATE employee SET manager_id = ? WHERE first_name = "?"`,[managerId,employee], (err,res)=>{
+        ]).then(({employee,managerId})=>{
+        db.query(`UPDATE employee SET manager_id = ? WHERE first_name = ?`,[managerId,employee], (err,res)=>{
             console.log(`Manager updated for ${employee}`)
             init();
         })   
