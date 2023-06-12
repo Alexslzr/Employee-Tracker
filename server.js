@@ -1,5 +1,6 @@
 const inquirer = require('inquirer');
 const mysql = require('mysql2');
+const art = require('ascii-art');
 
 
 const db = mysql.createConnection(
@@ -11,6 +12,14 @@ const db = mysql.createConnection(
     },
     console.log(`Connected to the employee_db database.`)
   );
+
+art.font(`Employee Tracker`,'doom',(err, rendered)=>{
+    if(err){
+        console.error(err);
+    }
+    console.log(rendered);
+    init();
+});
 
 
 function init(){
@@ -87,7 +96,6 @@ function viewAllRole(){
         console.table(rows);
         init();
     })
-    init();
 }
 
 function addEmp(){
@@ -115,6 +123,9 @@ function addEmp(){
             },
             ]).then(({firstName,lastName,role,manager}) => {
                 db.query('INSERT INTO employee(first_name,last_name,role_id,manager_id) VALUES(?,?,?,?)',[firstName,lastName,role,manager], (err,res)=>{
+                if(err){
+                    console.error(err)
+                }
                 console.log('Employees Table Updated')
                 init();
             })
@@ -131,6 +142,9 @@ function addDep(){
             }
         ]).then(({department}) =>{
             db.query(`INSERT INTO department(name) VALUES (?)`,department, (err,res)=>{
+                if(err){
+                    console.error(err)
+                }
                 console.log('department added')
                 init();
             })
@@ -157,6 +171,9 @@ function addRole(){
             },
             ]).then(({newrole,salary,department})=>{
                 db.query(`INSERT INTO role(title, salary, department_id) VALUES(?,?,?)`,[newrole,salary,department], (err,res)=>{
+                    if(err){
+                        console.error(err)
+                    }
                     console.log('Roles table Updated')
                     init();
                 })
@@ -179,6 +196,9 @@ function updateEmpRole(){
             }
             ]).then(({employee,roleId})=>{
             db.query(`UPDATE employee SET role_id = ? WHERE first_name = ?`,[roleId,employee], (err,res)=>{
+                if(err){
+                    console.error(err)
+                }
                 console.log(`Role updated for ${employee}`)
                 init();
             })
@@ -199,6 +219,9 @@ function updateEmpManager(){
         }
         ]).then(({employee,managerId})=>{
         db.query(`UPDATE employee SET manager_id = ? WHERE first_name = ?`,[managerId,employee], (err,res)=>{
+            if(err){
+                console.error(err)
+            }
             console.log(`Manager updated for ${employee}`)
             init();
         })   
@@ -214,6 +237,9 @@ function deleteEmp(){
         }
     ]).then(({employee})=>{
         db.query('DELETE FROM employee WHERE first_name = ?',[employee],(err,res)=>{
+            if(err){
+                console.error(err)
+            }
             console.log(`${employee} deleted from database`)
             init();
         })
@@ -232,6 +258,9 @@ function viewEmpbyDep(){
             JOIN role ON employee.role_id=role.id 
             JOIN department on department.id=role.department_id 
             WHERE department.id = ?`,department,(err,res)=>{
+                if(err){
+                    console.error(err)
+                }
                 console.table(res);
                 init();
             })
@@ -250,9 +279,11 @@ function viewEmpbyManager(){
             JOIN role ON employee.role_id=role.id 
             JOIN department on department.id=role.department_id 
             WHERE manager_id = ?`,manager,(err,res)=>{
+                if(err){
+                    console.error(err)
+                }
                 console.table(res);
                 init();
             })
         })
 }
-init();

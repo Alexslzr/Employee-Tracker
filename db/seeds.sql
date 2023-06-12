@@ -22,7 +22,9 @@ VALUES  ("Alejandro", "Salazar", 6 ,NULL),
         ("Graciela", "Caro", 8 , NULL),
         ("Carlos", "Quintero", 7 , 5),
         ("Joel", "Guzman", 2 , NULL),
-        ("Fernanda", "Lopez", 1 , 7 );
+        ("Fernanda", "Lopez", 1 , 7 ),
+        ("Peter", "Verdugo", 5 , 1 ),
+        ("Mariana", "Ortega", 5 , 1 );
         
         
         
